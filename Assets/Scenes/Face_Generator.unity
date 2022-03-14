@@ -207,9 +207,33 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 399786163}
-        m_TargetAssemblyTypeName: FaceGenerator, Assembly-CSharp
-        m_MethodName: NextPatientButtonPressed
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: ResetAllText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: TriggerResults
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: HoldPatient
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -475,6 +499,86 @@ MonoBehaviour:
   patientName_8: Pondafika
   patientName_9: Nagoodisk
   patientName_10: Bulra
+  holdTrustworthyNurseTextLine_1: That patient was not ill. You have wasted hospital
+    resources.
+  holdTrustworthyNurseTextLine_2: Incorrect diagnosis. We really could have used
+    that bed.
+  holdTrustworthyNurseTextLine_3: We don't have the room for any patients who aren't
+    actually ill doctor.
+  holdTrustworthyNurseTextLine_4: 'They were not ill. You should really be more careful
+    doctor. '
+  holdTrustworthyNurseTextLine_5: We are seriously running out of room here doctor.
+  holdTrustworthyNurseTextLine_6: We can't afford to waster bed space. Please try
+    to be more careful.
+  holdTrustworthyNurseTextLine_7: I have recieved a complaint from your last patient.
+    It would appear they were perfectly well.
+  holdTrustworthyNurseTextLine_8: 'There is a big difference between the mentally
+    ill and the mentally healthy doctor. '
+  holdTrustworthyNurseTextLine_9: 'You really need to be more careful. You cannot
+    misdiagose patients. '
+  holdTrustworthyNurseTextLine_10: 'I think you may be at risk of losing your job
+    if you misdiagnose many more patients. '
+  dischargeTrustworthyNurseTextLine_1: They have intergrated back in to their old
+    life perfectly doctor. Congratulations.
+  dischargeTrustworthyNurseTextLine_2: That patient has gotten back into their old
+    job. They are now working as a pastry chef.
+  dischargeTrustworthyNurseTextLine_3: 'The patient has been able to spend time with
+    their family again. '
+  dischargeTrustworthyNurseTextLine_4: 'Now the patient is back on the pig farm,
+    they seem much more settled. '
+  dischargeTrustworthyNurseTextLine_5: 'Back to their job as a tailor as happy as
+    larry doctor. '
+  dischargeTrustworthyNurseTextLine_6: 'The patient is now set to get married, thanks
+    to your sterling work doctor. '
+  dischargeTrustworthyNurseTextLine_7: 'Working as a shepherd. Now spending time
+    in the fields and relaxing into their work. '
+  dischargeTrustworthyNurseTextLine_8: 'The patient has finally bought their own
+    home. Moving on in life with your help doctor. '
+  dischargeTrustworthyNurseTextLine_9: 'Opening a cattery to help poor lost furry
+    souls. '
+  dischargeTrustworthyNurseTextLine_10: 'Your last patient won the lottery and donated
+    a large sum to the hospital as thanks for your help. '
+  holdUntrustworthyNurseTextLine_1: 'That last patient tried to hang themselves.
+    good call keeping them in doctor. '
+  holdUntrustworthyNurseTextLine_2: The patient tried to escape again. Better they
+    are kept safe in here with us.
+  holdUntrustworthyNurseTextLine_3: They have been caught hiding their medication.
+    This proves you were right to doubt them.
+  holdUntrustworthyNurseTextLine_4: We found a small razor in their room. This could
+    have been very dangerous if they  hadn't been here..
+  holdUntrustworthyNurseTextLine_5: 'We caught the patient stealing other patients
+    possessions. '
+  holdUntrustworthyNurseTextLine_6: This patient was found in another patients bed.
+    This is obviously not acceptable.
+  holdUntrustworthyNurseTextLine_7: The patient was found wandering in the garden,
+    late at night, muttering to themselves.
+  holdUntrustworthyNurseTextLine_8: They have not spoken since your last session.
+    They seem to be catatonic doctor.
+  holdUntrustworthyNurseTextLine_9: We found the patient banging their head against
+    the wall. It was quite a scene. Better they stay with us.
+  holdUntrustworthyNurseTextLine_10: 'Your patient has disappeared! We can''t find
+    them anywhere. We are all deeply worried. '
+  dischargeUntrustworthyNurseTextLine_1: We have heard reports of your patient causing
+    major disturbances in the local community. You should have spotted this doctor.
+  dischargeUntrustworthyNurseTextLine_2: 'The patient is now dead. They jumped from
+    the roof of the city library. Doctor you must be more careful. '
+  dischargeUntrustworthyNurseTextLine_3: 'This patient took a family hostage and
+    is now in negotiations for police. We are wishing for a peaceful conclusion. '
+  dischargeUntrustworthyNurseTextLine_4: They have not been seen or heard from since
+    discharge. They have not reported to their parole officer and we fear the worst.
+  dischargeUntrustworthyNurseTextLine_5: 'After discharge this patient attempted
+    to rob a bank, where they were shot and killed by security guards. '
+  dischargeUntrustworthyNurseTextLine_6: 'Found wandering the streets, claiming to
+    be from heaven. We have brought them into the secure unit. '
+  dischargeUntrustworthyNurseTextLine_7: Doctor this patient is clearly untrustworthy.
+    Why were they discharged? They have murdered their family and gone on the run.
+  dischargeUntrustworthyNurseTextLine_8: Currently held in our secure unit, this
+    patient was psychotic and clearly deranged. Doctor please be more careful. Every
+    life matters!
+  dischargeUntrustworthyNurseTextLine_9: This patient was not well doctor. I don't
+    understand how you could have released them from your care.
+  dischargeUntrustworthyNurseTextLine_10: 'After being discharged from our facility
+    the patient brought an axe and went on a mad rampage through town. '
   textDelay: 1.5
 --- !u!4 &1076001641
 Transform:
@@ -1247,7 +1351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1535472018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1315,8 +1419,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1693,8 +1797,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1827,9 +1931,33 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 399786163}
-        m_TargetAssemblyTypeName: FaceGenerator, Assembly-CSharp
-        m_MethodName: NextPatientButtonPressed
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: ResetAllText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: TriggerResults
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1076001640}
+        m_TargetAssemblyTypeName: Conversation, Assembly-CSharp
+        m_MethodName: DischargePatient
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1962,8 +2090,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

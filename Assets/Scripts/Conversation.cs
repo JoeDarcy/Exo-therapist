@@ -43,42 +43,131 @@ public class Conversation : MonoBehaviour
     [SerializeField] private string patientName_9 = null;
     [SerializeField] private string patientName_10 = null;
 
+    // Nurse text lines for hold (Trustworthy)
+    [SerializeField] private string holdTrustworthyNurseTextLine_1 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_2 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_3 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_4 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_5 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_6 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_7 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_8 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_9 = null;
+    [SerializeField] private string holdTrustworthyNurseTextLine_10 = null;
+
+    // Nurse text lines for discharge (Trustworthy)
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_1 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_2 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_3 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_4 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_5 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_6 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_7 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_8 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_9 = null;
+    [SerializeField] private string dischargeTrustworthyNurseTextLine_10 = null;
+
+    // Nurse text lines for hold (Untrustworthy)
+    [SerializeField] private string holdUntrustworthyNurseTextLine_1 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_2 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_3 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_4 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_5 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_6 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_7 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_8 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_9 = null;
+    [SerializeField] private string holdUntrustworthyNurseTextLine_10 = null;
+
+    // Nurse text lines for discharge (Untrustworthy)
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_1 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_2 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_3 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_4 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_5 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_6 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_7 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_8 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_9 = null;
+    [SerializeField] private string dischargeUntrustworthyNurseTextLine_10 = null;
+
+    // Nurse text line
+    private int holdPatientTextNumber = 0;
+    private int dischargePatientTextNumber = 0;
+    private string nurseTextLine = null;
+
     // Text delay
     [SerializeField] private float textDelay = 0.0f;
 
     // Session active
     private bool sessionActive = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-	    
-    }
+    // Session results
+    private bool decisionMade = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-	    if (sessionActive)
-	    {
-		    
-		    StartCoroutine(NewSession());
-		    
-		    
+    // Doctors decision
+    private bool holdPatient = false;
+    private bool dischargePatient = false;
 
+    private void Start()
+    {/*
+        if (sessionActive)
+        {
+            // Set up new session
+            StartCoroutine(NewSession());
+
+            // Deactivate session
             sessionActive = false;
         }
 
+        if (decisionMade)
+        {
+            // Get results of session from nurse
+            StartCoroutine(ResultsOfSession());
 
-	    //nurseText.text = "Hi I am the nurse";
+            // Reset results
+            decisionMade = false;
+        }
+        */
+    }
+    // Update is called once per frame
+    void Update()
+    {
+	    if (sessionActive && FaceGenerator.nextPatient)
+	    {
+		    // Set up new session
+		    StartCoroutine(NewSession());
+
+            // Deactivate session
+            sessionActive = false;
+        }
+
+        if (decisionMade)
+        {
+            // Get results of session from nurse
+            StartCoroutine(ResultsOfSession());
+
+            // Reset results
+            decisionMade = false;
+        }
     }
 
-    // Pause
+    // New session set up
     IEnumerator NewSession()
     {
 	    yield return new WaitForSeconds(textDelay);
         doctorText.text = DoctorText();
 	    yield return new WaitForSeconds(textDelay);
         patientText.text = PatientText();
+    }
+
+    // Results of session
+    IEnumerator ResultsOfSession()
+    {
+        // Set nurse response
+        yield return new WaitForSeconds(textDelay);
+        nurseText.text = NurseText();
+        yield return new WaitForSeconds(textDelay);
     }
 
     // Patient text
@@ -191,6 +280,188 @@ public class Conversation : MonoBehaviour
 	    return "Hello, " + patientSex + patientName + ". How are you feeling today?";
     }
 
+    // Nurse text
+    private string NurseText()
+    {
+        if (holdPatient)
+        {
+            if (FaceGenerator.trustworthiness >= 50)
+            {
+                holdPatientTextNumber = Random.Range(1, 11);
+
+                switch (holdPatientTextNumber)
+                {
+                    case 1:
+                        nurseTextLine = holdTrustworthyNurseTextLine_1;
+                        break;
+                    case 2:
+                        nurseTextLine = holdTrustworthyNurseTextLine_2;
+                        break;
+                    case 3:
+                        nurseTextLine = holdTrustworthyNurseTextLine_3;
+                        break;
+                    case 4:
+                        nurseTextLine = holdTrustworthyNurseTextLine_4;
+                        break;
+                    case 5:
+                        nurseTextLine = holdTrustworthyNurseTextLine_5;
+                        break;
+                    case 6:
+                        nurseTextLine = holdTrustworthyNurseTextLine_6;
+                        break;
+                    case 7:
+                        nurseTextLine = holdTrustworthyNurseTextLine_7;
+                        break;
+                    case 8:
+                        nurseTextLine = holdTrustworthyNurseTextLine_8;
+                        break;
+                    case 9:
+                        nurseTextLine = holdTrustworthyNurseTextLine_9;
+                        break;
+                    case 10:
+                        nurseTextLine = holdTrustworthyNurseTextLine_10;
+                        break;
+                    default:
+                        nurseTextLine = holdTrustworthyNurseTextLine_1;
+                        break;
+                }
+            }
+
+            if (FaceGenerator.trustworthiness < 50)
+            {
+                holdPatientTextNumber = Random.Range(1, 11);
+
+                switch (holdPatientTextNumber)
+                {
+                    case 1:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_1;
+                        break;
+                    case 2:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_2;
+                        break;
+                    case 3:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_3;
+                        break;
+                    case 4:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_4;
+                        break;
+                    case 5:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_5;
+                        break;
+                    case 6:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_6;
+                        break;
+                    case 7:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_7;
+                        break;
+                    case 8:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_8;
+                        break;
+                    case 9:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_9;
+                        break;
+                    case 10:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_10;
+                        break;
+                    default:
+                        nurseTextLine = holdUntrustworthyNurseTextLine_1;
+                        break;
+                }
+            }
+        }
+
+        if (dischargePatient)
+        {
+            if (FaceGenerator.trustworthiness >= 50)
+            {
+                dischargePatientTextNumber = Random.Range(1, 11);
+
+                switch (dischargePatientTextNumber)
+                {
+                    case 1:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_1;
+                        break;
+                    case 2:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_2;
+                        break;
+                    case 3:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_3;
+                        break;
+                    case 4:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_4;
+                        break;
+                    case 5:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_5;
+                        break;
+                    case 6:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_6;
+                        break;
+                    case 7:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_7;
+                        break;
+                    case 8:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_8;
+                        break;
+                    case 9:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_9;
+                        break;
+                    case 10:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_10;
+                        break;
+                    default:
+                        nurseTextLine = dischargeTrustworthyNurseTextLine_1;
+                        break;
+                }
+            }
+
+            if (FaceGenerator.trustworthiness < 50)
+            {
+                dischargePatientTextNumber = Random.Range(1, 11);
+
+                switch (dischargePatientTextNumber)
+                {
+                    case 1:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_1;
+                        break;
+                    case 2:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_2;
+                        break;
+                    case 3:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_3;
+                        break;
+                    case 4:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_4;
+                        break;
+                    case 5:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_5;
+                        break;
+                    case 6:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_6;
+                        break;
+                    case 7:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_7;
+                        break;
+                    case 8:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_8;
+                        break;
+                    case 9:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_9;
+                        break;
+                    case 10:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_10;
+                        break;
+                    default:
+                        nurseTextLine = dischargeUntrustworthyNurseTextLine_1;
+                        break;
+                }
+            }
+        }
+
+        // Return nurse line
+        return "Hello Doctor, here are the results of your last session. " + nurseTextLine;
+    }
+
+
 	// Reset all text
 	public void ResetAllText()
 	{
@@ -199,8 +470,27 @@ public class Conversation : MonoBehaviour
         patientTextLine = null;
         doctorText.text = null;
         patientText.text = null;
+        nurseText.text = null;
 
         // Restart session
         sessionActive = true;
+    }
+
+    // Trigger results
+    public void TriggerResults()
+    {
+        decisionMade = true;
+    }
+
+    // Hold patient
+    public void HoldPatient()
+    {
+        holdPatient = true;
+    }
+
+    // Discharge patient
+    public void DischargePatient()
+    {
+        dischargePatient = true;
     }
 }

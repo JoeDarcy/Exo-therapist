@@ -73,7 +73,7 @@ public class FaceGenerator : MonoBehaviour
     [SerializeField] private GameObject neck = null;
 
     // Trustworthiness
-    private int trustworthiness = 50;
+    public static int trustworthiness = 50;
     [SerializeField] private TMP_Text trustworthinessText = null;
 
     // Facial features 
@@ -84,7 +84,7 @@ public class FaceGenerator : MonoBehaviour
     private int eyebrowsNumber;
 
     // Next patient 
-    private bool nextPatient = false;
+    public static bool nextPatient = false;
 
     // Start is called before the first frame update
     void Start()
@@ -104,8 +104,11 @@ public class FaceGenerator : MonoBehaviour
     {
 	    if (nextPatient)
 	    {
-		    // Generate an expanding sprite mask to act as a light
-		    GenerateLightSpriteMask();
+            // Reset trustworthiness level to 50 (neutral)
+            trustworthiness = 50;
+
+            // Generate an expanding sprite mask to act as a light
+            GenerateLightSpriteMask();
 
             // Generate new face
             GenerateFace();
@@ -115,9 +118,6 @@ public class FaceGenerator : MonoBehaviour
 
             // Update trustworthiness text
             trustworthinessText.text = "Trustworthiness: " + trustworthiness;
-
-            // Reset trustworthiness level to 50 (neutral)
-            trustworthiness = 50;
 
             // Reset next patient bool
             nextPatient = false;
