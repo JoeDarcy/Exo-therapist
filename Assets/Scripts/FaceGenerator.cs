@@ -86,6 +86,7 @@ public class FaceGenerator : MonoBehaviour
     // Next patient 
     public static bool nextPatient = false;
 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -98,11 +99,12 @@ public class FaceGenerator : MonoBehaviour
 	    // Generate first face
 	    GenerateFace();
     }
+    
 
     // Update is called once per frame
     void Update()
     {
-	    if (nextPatient)
+	    if (nextPatient && Conversation.sessionActive)
 	    {
             // Reset trustworthiness level to 50 (neutral)
             trustworthiness = 50;
@@ -128,6 +130,15 @@ public class FaceGenerator : MonoBehaviour
     public void NextPatientButtonPressed()
     {
         nextPatient = true;
+
+        Conversation.sessionActive = true;
+
+        DestroyFace();
+    }
+
+    // Set hold or discharge button pressed
+    public void DecisionMade()
+    {
         DestroyFace();
     }
 

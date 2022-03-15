@@ -9,6 +9,12 @@ public class Conversation : MonoBehaviour
     [SerializeField] private TMP_Text doctorText = null;
     [SerializeField] private TMP_Text nurseText = null;
 
+    // Text backgrounds
+    [SerializeField] private GameObject doctorTextBackground = null;
+    [SerializeField] private GameObject nurseTextBackground = null;
+    [SerializeField] private GameObject patientTextBackground = null;
+
+
     // Patient text lines
     [SerializeField] private string patientTextLine_1 = null;
     [SerializeField] private string patientTextLine_2 = null;
@@ -30,6 +36,9 @@ public class Conversation : MonoBehaviour
     private string patientSex = null;
     private int patientNameNumber = 0;
     private string patientName = null;
+
+    // Doctors score
+    private int doctorScore = 5;
 
     // Patient names
     [SerializeField] private string patientName_1 = null;
@@ -100,7 +109,7 @@ public class Conversation : MonoBehaviour
     [SerializeField] private float textDelay = 0.0f;
 
     // Session active
-    private bool sessionActive = true;
+    public static bool sessionActive = true;
 
     // Session results
     private bool decisionMade = false;
@@ -109,8 +118,9 @@ public class Conversation : MonoBehaviour
     private bool holdPatient = false;
     private bool dischargePatient = false;
 
+
     private void Start()
-    {/*
+    {
         if (sessionActive)
         {
             // Set up new session
@@ -128,12 +138,12 @@ public class Conversation : MonoBehaviour
             // Reset results
             decisionMade = false;
         }
-        */
     }
+
     // Update is called once per frame
     void Update()
     {
-	    if (sessionActive && FaceGenerator.nextPatient)
+	    if (sessionActive)
 	    {
 		    // Set up new session
 		    StartCoroutine(NewSession());
@@ -149,25 +159,46 @@ public class Conversation : MonoBehaviour
 
             // Reset results
             decisionMade = false;
+
+            // Output doctor's sccore
+            Debug.Log("Doctor's Score: " + doctorScore);
         }
     }
 
     // New session set up
     IEnumerator NewSession()
     {
-	    yield return new WaitForSeconds(textDelay);
+        // Pause then print doctor text
+        yield return new WaitForSeconds(textDelay);
+        // Activate text background for doctor
+        doctorTextBackground.SetActive(true);
         doctorText.text = DoctorText();
+        // Pause then print patient response
 	    yield return new WaitForSeconds(textDelay);
+        // Activate text background for patient
+        patientTextBackground.SetActive(true);
         patientText.text = PatientText();
     }
 
     // Results of session
     IEnumerator ResultsOfSession()
     {
+        // Dectivate text backgrounds for doctor and patient
+        doctorTextBackground.SetActive(false);
+        patientTextBackground.SetActive(false);
+
         // Set nurse response
         yield return new WaitForSeconds(textDelay);
+        // Activate nurse text background
+        nurseTextBackground.SetActive(true);
         nurseText.text = NurseText();
-        yield return new WaitForSeconds(textDelay);
+        yield return new WaitForSeconds(textDelay * 3);
+
+        // Deactivate nurse text background
+        nurseTextBackground.SetActive(false);
+
+        ResetAllText();
+
     }
 
     // Patient text
@@ -287,6 +318,9 @@ public class Conversation : MonoBehaviour
         {
             if (FaceGenerator.trustworthiness >= 50)
             {
+                // Decrement doctor's score
+                doctorScore -= 1;
+
                 holdPatientTextNumber = Random.Range(1, 11);
 
                 switch (holdPatientTextNumber)
@@ -329,6 +363,9 @@ public class Conversation : MonoBehaviour
 
             if (FaceGenerator.trustworthiness < 50)
             {
+                // Increment doctor's score
+                doctorScore += 1;
+
                 holdPatientTextNumber = Random.Range(1, 11);
 
                 switch (holdPatientTextNumber)
@@ -374,6 +411,9 @@ public class Conversation : MonoBehaviour
         {
             if (FaceGenerator.trustworthiness >= 50)
             {
+                // Increment doctor's score
+                doctorScore += 1;
+
                 dischargePatientTextNumber = Random.Range(1, 11);
 
                 switch (dischargePatientTextNumber)
@@ -416,6 +456,9 @@ public class Conversation : MonoBehaviour
 
             if (FaceGenerator.trustworthiness < 50)
             {
+                // Decrement doctor's score
+                doctorScore -= 1;
+
                 dischargePatientTextNumber = Random.Range(1, 11);
 
                 switch (dischargePatientTextNumber)
@@ -457,8 +500,12 @@ public class Conversation : MonoBehaviour
             }
         }
 
+        // Reset hold and discharge bools
+        holdPatient = false;
+        dischargePatient = false;
+
         // Return nurse line
-        return "Hello Doctor, here are the results of your last session. " + nurseTextLine;
+        return "Hello Doctor, here are the results of your last session: \t\t\t" + nurseTextLine;
     }
 
 
@@ -471,9 +518,6 @@ public class Conversation : MonoBehaviour
         doctorText.text = null;
         patientText.text = null;
         nurseText.text = null;
-
-        // Restart session
-        sessionActive = true;
     }
 
     // Trigger results
