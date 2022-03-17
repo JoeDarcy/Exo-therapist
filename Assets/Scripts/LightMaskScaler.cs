@@ -15,7 +15,7 @@ public class LightMaskScaler : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	void FixedUpdate()
 	{
 		scaleAmount += scaleSpeed;
 

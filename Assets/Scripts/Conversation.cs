@@ -105,6 +105,9 @@ public class Conversation : MonoBehaviour
     private int dischargePatientTextNumber = 0;
     private string nurseTextLine = null;
 
+    // Nurse movement animator
+    [SerializeField] private Animator nurseAnimator = null;
+
     // Text delay
     [SerializeField] private float textDelay = 0.0f;
 
@@ -183,12 +186,16 @@ public class Conversation : MonoBehaviour
     // Results of session
     IEnumerator ResultsOfSession()
     {
-        // Dectivate text backgrounds for doctor and patient
+	    // Deactivate text backgrounds for doctor and patient
         doctorTextBackground.SetActive(false);
         patientTextBackground.SetActive(false);
 
+        // Trigger nurse enter animation
+        nurseAnimator.SetBool("NurseExit", false);  // Reset nurse exit bool
+        nurseAnimator.SetBool("NurseEnter", true);
+        yield return new WaitForSeconds(textDelay * 2);
+
         // Set nurse response
-        yield return new WaitForSeconds(textDelay);
         // Activate nurse text background
         nurseTextBackground.SetActive(true);
         nurseText.text = NurseText();
@@ -196,9 +203,12 @@ public class Conversation : MonoBehaviour
 
         // Deactivate nurse text background
         nurseTextBackground.SetActive(false);
-
         ResetAllText();
 
+        // Trigger nurse exit animation
+        nurseAnimator.SetBool("NurseEnter", false);  // Reset nurse enter bool
+        nurseAnimator.SetBool("NurseExit", true);
+        yield return new WaitForSeconds(textDelay);
     }
 
     // Patient text
