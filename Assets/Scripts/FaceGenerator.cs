@@ -106,10 +106,7 @@ public class FaceGenerator : MonoBehaviour
     {
 	    if (nextPatient && Conversation.sessionActive)
 	    {
-            // Reset trustworthiness level to 50 (neutral)
-            trustworthiness = 50;
-
-            // Generate an expanding sprite mask to act as a light
+		    // Generate an expanding sprite mask to act as a light
             GenerateLightSpriteMask();
 
             // Generate new face
@@ -117,9 +114,6 @@ public class FaceGenerator : MonoBehaviour
 
             // Generate dark version of character
             GenerateDarkVersion();
-
-            // Update trustworthiness text
-            trustworthinessText.text = "Trustworthiness: " + trustworthiness;
 
             // Reset next patient bool
             nextPatient = false;
@@ -177,6 +171,9 @@ public class FaceGenerator : MonoBehaviour
     // Face generation function
     private void GenerateFace()
     {
+	    // Reset trustworthiness level to 50 (neutral)
+	    trustworthiness = 50;
+
         // Choose random face
         faceNumber = Random.Range(1, 6);
         // Switch on faceNumber
@@ -350,5 +347,9 @@ public class FaceGenerator : MonoBehaviour
                 trustworthiness += 10;
                 break;
         }
+
+        // Update trustworthiness text
+        trustworthinessText.text = "Trustworthiness: " + trustworthiness;
+        Debug.Log("Trustworthiness: " + trustworthiness);
     }
 }

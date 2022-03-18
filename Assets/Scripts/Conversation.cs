@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
 public class Conversation : MonoBehaviour
 {
     // Text references for patient, doctor and nurse
@@ -121,28 +123,12 @@ public class Conversation : MonoBehaviour
     private bool holdPatient = false;
     private bool dischargePatient = false;
 
+    // UI buttons 
+    [SerializeField] private Button nextPatientButton = null;
+    [SerializeField] private Button holdPatientButton = null;
+    [SerializeField] private Button dischargePatientButton = null;
 
-    private void Start()
-    {
-        if (sessionActive)
-        {
-            // Set up new session
-            StartCoroutine(NewSession());
-
-            // Deactivate session
-            sessionActive = false;
-        }
-
-        if (decisionMade)
-        {
-            // Get results of session from nurse
-            StartCoroutine(ResultsOfSession());
-
-            // Reset results
-            decisionMade = false;
-        }
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -151,6 +137,9 @@ public class Conversation : MonoBehaviour
 		    // Set up new session
 		    StartCoroutine(NewSession());
 
+		    // Enable decision buttons and disable next patient button
+            SetUpDecisionButtons();
+
             // Deactivate session
             sessionActive = false;
         }
@@ -160,12 +149,36 @@ public class Conversation : MonoBehaviour
             // Get results of session from nurse
             StartCoroutine(ResultsOfSession());
 
+            // Disable hold and discharge patient buttons interactions
+            holdPatientButton.interactable = false;
+            dischargePatientButton.interactable = false;
+
             // Reset results
             decisionMade = false;
 
-            // Output doctor's sccore
+            // Output doctor's score
             Debug.Log("Doctor's Score: " + doctorScore);
         }
+    }
+
+    // Disable next patient button interactions and enable hold and discharge patient buttons interactions
+    private void SetUpDecisionButtons()
+    {
+	    // Disable next patient button interactions
+	    nextPatientButton.interactable = false;
+	    // Enable hold and discharge patient buttons interactions
+	    holdPatientButton.interactable = true;
+	    dischargePatientButton.interactable = true;
+    }
+
+    // Enable next patient button interactions and Disable hold and discharge patient buttons interactions
+    private void SetUpNextPatientButton()
+    {
+	    // Enable next patient button interactions
+	    nextPatientButton.interactable = true;
+	    // Disable hold and discharge patient buttons interactions
+	    holdPatientButton.interactable = false;
+	    dischargePatientButton.interactable = false;
     }
 
     // New session set up
@@ -208,7 +221,10 @@ public class Conversation : MonoBehaviour
         // Trigger nurse exit animation
         nurseAnimator.SetBool("NurseEnter", false);  // Reset nurse enter bool
         nurseAnimator.SetBool("NurseExit", true);
-        yield return new WaitForSeconds(textDelay);
+        yield return new WaitForSeconds(textDelay / 2);
+
+        // Enable next patient button
+        SetUpNextPatientButton();
     }
 
     // Patient text
@@ -373,10 +389,7 @@ public class Conversation : MonoBehaviour
 
             if (FaceGenerator.trustworthiness < 50)
             {
-                // Increment doctor's score
-                doctorScore += 1;
-
-                holdPatientTextNumber = Random.Range(1, 11);
+	            holdPatientTextNumber = Random.Range(1, 11);
 
                 switch (holdPatientTextNumber)
                 {
@@ -421,10 +434,7 @@ public class Conversation : MonoBehaviour
         {
             if (FaceGenerator.trustworthiness >= 50)
             {
-                // Increment doctor's score
-                doctorScore += 1;
-
-                dischargePatientTextNumber = Random.Range(1, 11);
+	            dischargePatientTextNumber = Random.Range(1, 11);
 
                 switch (dischargePatientTextNumber)
                 {
