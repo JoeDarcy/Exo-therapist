@@ -1237,7 +1237,7 @@ MonoBehaviour:
   holdTrustworthyNurseTextLine_4: 'They were not ill. You should really be more careful
     doctor. '
   holdTrustworthyNurseTextLine_5: We are seriously running out of room here doctor.
-  holdTrustworthyNurseTextLine_6: We can't afford to waster bed space. Please try
+  holdTrustworthyNurseTextLine_6: We can't afford to waste bed space. Please try
     to be more careful.
   holdTrustworthyNurseTextLine_7: I have recieved a complaint from your last patient.
     It would appear they were perfectly well.
@@ -1274,7 +1274,7 @@ MonoBehaviour:
   holdUntrustworthyNurseTextLine_3: They have been caught hiding their medication.
     This proves you were right to doubt them.
   holdUntrustworthyNurseTextLine_4: We found a small razor in their room. This could
-    have been very dangerous if they  hadn't been here..
+    have been very dangerous if they  hadn't been here.
   holdUntrustworthyNurseTextLine_5: 'We caught the patient stealing other patients
     possessions. '
   holdUntrustworthyNurseTextLine_6: This patient was found in another patients bed.
