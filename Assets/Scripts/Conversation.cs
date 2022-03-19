@@ -266,8 +266,6 @@ public class Conversation : MonoBehaviour
         // Set doctors score from previous session
         doctorScorePreviousFrame = doctorScore;
 
-        ResetAllText();
-
         // Trigger nurse exit animation
         nurseAnimator.SetBool("NurseEnter", false);  // Reset nurse enter bool
         nurseAnimator.SetBool("NurseExit", true);
