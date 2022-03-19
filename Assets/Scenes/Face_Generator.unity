@@ -1248,6 +1248,8 @@ MonoBehaviour:
   dischargeUntrustworthyNurseTextLine_10: 'After being discharged from our facility
     the patient brought an axe and went on a mad rampage through town. '
   nurseAnimator: {fileID: 141958859}
+  nurseLetterAnimator: {fileID: 1634589048}
+  adminLetterAnimator: {fileID: 1897153113}
   textDelay: 1.7
   nextPatientButton: {fileID: 1086797464}
   holdPatientButton: {fileID: 16390488}

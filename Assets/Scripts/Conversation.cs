@@ -16,7 +16,6 @@ public class Conversation : MonoBehaviour
     [SerializeField] private GameObject nurseTextBackground = null;
     [SerializeField] private GameObject patientTextBackground = null;
 
-
     // Patient text lines
     [SerializeField] private string patientTextLine_1 = null;
     [SerializeField] private string patientTextLine_2 = null;
@@ -109,6 +108,12 @@ public class Conversation : MonoBehaviour
 
     // Nurse movement animator
     [SerializeField] private Animator nurseAnimator = null;
+
+    // Nurse letter movement animator
+    [SerializeField] private Animator nurseLetterAnimator = null;
+
+    // Admin letter movement animator
+    [SerializeField] private Animator adminLetterAnimator = null;
 
     // Text delay
     [SerializeField] private float textDelay = 0.0f;
@@ -205,8 +210,12 @@ public class Conversation : MonoBehaviour
 
         // Trigger nurse enter animation
         nurseAnimator.SetBool("NurseExit", false);  // Reset nurse exit bool
-        nurseAnimator.SetBool("NurseEnter", true);
+        nurseAnimator.SetBool("NurseEnter", true);  // Set nurse enter bool
         yield return new WaitForSeconds(textDelay * 2);
+
+        // Trigger nurse letter enter animation
+        nurseLetterAnimator.SetBool("LetterExit", false);   // Reset nurse letter exit bool
+        nurseLetterAnimator.SetBool("LetterEnter", true);   // Set nurse letter enter bool
 
         // Set nurse response
         // Activate nurse text background
