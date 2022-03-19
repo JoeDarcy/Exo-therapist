@@ -10,6 +10,7 @@ public class Conversation : MonoBehaviour
     [SerializeField] private TMP_Text patientText = null;
     [SerializeField] private TMP_Text doctorText = null;
     [SerializeField] private TMP_Text nurseText = null;
+    [SerializeField] private TMP_Text adminText = null;
 
     // Text backgrounds
     [SerializeField] private GameObject doctorTextBackground = null;
@@ -40,6 +41,14 @@ public class Conversation : MonoBehaviour
 
     // Doctors score
     private int doctorScore = 5;
+    private int doctorScorePreviousFrame = 5;
+
+    // Admin text strings for each level of warning
+    [SerializeField] private string adminTextFirstVerbalWarning = "This is your first verbal warning for misdiagnosing patients.";
+    [SerializeField] private string adminTextSecondVerbalWarning = "This is your second verbal warning for misdiagnosing patients.";
+    [SerializeField] private string adminTextFirstWrittenWarning = "This is your first written warning for misdiagnosing patients.";
+    [SerializeField] private string adminTextSecondWrittenWarning = "This is your second written warning for misdiagnosing patients.";
+    [SerializeField] private string adminTextDismissal = "I am afraid that we are going to have to let you go doctor. You are now dismissed.";
 
     // Patient names
     [SerializeField] private string patientName_1 = null;
@@ -139,6 +148,9 @@ public class Conversation : MonoBehaviour
     {
 	    if (sessionActive)
 	    {
+            // Set doctors score from previous session
+            doctorScorePreviousFrame = doctorScore;
+
 		    // Set up new session
 		    StartCoroutine(NewSession());
 
@@ -163,6 +175,10 @@ public class Conversation : MonoBehaviour
 
             // Output doctor's score
             Debug.Log("Doctor's Score: " + doctorScore);
+
+            // Admin text if score is less than previous frame
+            if (doctorScore < doctorScorePreviousFrame)
+	            AdminText();
         }
     }
 
@@ -223,6 +239,10 @@ public class Conversation : MonoBehaviour
         nurseText.text = NurseText();
         yield return new WaitForSeconds(textDelay * 3);
 
+        // Trigger nurse letter exit animation
+        nurseLetterAnimator.SetBool("LetterEnter", false);   // Reset nurse letter enter bool
+        nurseLetterAnimator.SetBool("LetterExit", true);   // Set nurse letter exit bool
+
         // Deactivate nurse text background
         nurseTextBackground.SetActive(false);
         ResetAllText();
@@ -234,6 +254,29 @@ public class Conversation : MonoBehaviour
 
         // Enable next patient button
         SetUpNextPatientButton();
+    }
+
+    // Admin text
+    private void AdminText()
+    {
+	    switch (doctorScore)
+	    {
+            case 4:
+	            adminText.text = adminTextFirstVerbalWarning;
+                break;
+            case 3:
+	            adminText.text = adminTextSecondVerbalWarning;
+	            break;
+            case 2:
+	            adminText.text = adminTextFirstWrittenWarning;
+	            break;
+            case 1:
+	            adminText.text = adminTextSecondWrittenWarning;
+	            break;
+            case 0:
+	            adminText.text = adminTextDismissal;
+	            break;
+        }
     }
 
     // Patient text
