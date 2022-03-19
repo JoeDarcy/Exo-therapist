@@ -11,6 +11,7 @@ public class Conversation : MonoBehaviour
     [SerializeField] private TMP_Text doctorText = null;
     [SerializeField] private TMP_Text nurseText = null;
     [SerializeField] private TMP_Text adminText = null;
+    private string adminTextLine;
 
     // Text backgrounds
     [SerializeField] private GameObject doctorTextBackground = null;
@@ -150,9 +151,6 @@ public class Conversation : MonoBehaviour
 		    // Set up new session
 		    StartCoroutine(NewSession());
 
-		    // Enable decision buttons and disable next patient button
-            SetUpDecisionButtons();
-
             // Deactivate session
             sessionActive = false;
         }
@@ -168,6 +166,18 @@ public class Conversation : MonoBehaviour
 
             // Reset results
             decisionMade = false;
+        }
+    }
+
+    IEnumerator TypeText(TMP_Text textMeshProText, string textToType, float typeSpeed, float startDelay)
+    {
+        // Start delay if applicable
+        yield return new WaitForSeconds(startDelay);
+
+        for (int i = 0; i < textToType.Length; ++i)
+        {
+            textMeshProText.text += textToType[i];
+            yield return new WaitForSeconds(typeSpeed);
         }
     }
 
@@ -194,16 +204,28 @@ public class Conversation : MonoBehaviour
     // New session set up
     IEnumerator NewSession()
     {
+        // Trigger admin letter enter animation
+        adminLetterAnimator.SetBool("LetterEnter", false);   // Reset admin letter enter bool
+        adminLetterAnimator.SetBool("LetterExit", true);   // Set admin letter exit bool
+
+        // Trigger nurse letter exit animation
+        nurseLetterAnimator.SetBool("LetterEnter", false);   // Reset nurse letter enter bool
+        nurseLetterAnimator.SetBool("LetterExit", true);   // Set nurse letter exit bool
+
         // Pause then print doctor text
-        yield return new WaitForSeconds(textDelay);
+        yield return new WaitForSeconds(textDelay * 2);
         // Activate text background for doctor
         doctorTextBackground.SetActive(true);
-        doctorText.text = DoctorText();
+        StartCoroutine(TypeText(doctorText , DoctorText(), 0.02f, 0.0f));
         // Pause then print patient response
-	    yield return new WaitForSeconds(textDelay);
+	    yield return new WaitForSeconds(textDelay * 2);
         // Activate text background for patient
         patientTextBackground.SetActive(true);
-        patientText.text = PatientText();
+        StartCoroutine(TypeText(patientText, PatientText(), 0.02f, 0.0f));
+        yield return new WaitForSeconds(textDelay * 2);
+
+        // Enable decision buttons and disable next patient button
+        SetUpDecisionButtons();
     }
 
     // Results of session
@@ -223,22 +245,26 @@ public class Conversation : MonoBehaviour
         nurseLetterAnimator.SetBool("LetterEnter", true);   // Set nurse letter enter bool
 
         // Set nurse response
-        nurseText.text = NurseText();
-        yield return new WaitForSeconds(textDelay * 3);
+        StartCoroutine(TypeText(nurseText, NurseText(), 0.02f, 1.8f));
+        yield return new WaitForSeconds(textDelay * 5);
 
         // Admin text if score is less than previous frame
         if (doctorScore < doctorScorePreviousFrame)
-            AdminText();
+        {
+            // Trigger admin letter enter animation
+            adminLetterAnimator.SetBool("LetterExit", false);   // Reset admin letter exit bool
+            adminLetterAnimator.SetBool("LetterEnter", true);   // Set admin letter enter bool
+            yield return new WaitForSeconds(0.5f);
+            ResetAllText();
+
+            StartCoroutine(TypeText(adminText, AdminText(), 0.02f, 1.8f));
+        }
 
         // Output doctor's score
         Debug.Log("Doctor's Score: " + doctorScore);
 
         // Set doctors score from previous session
         doctorScorePreviousFrame = doctorScore;
-
-        // Trigger nurse letter exit animation
-        nurseLetterAnimator.SetBool("LetterEnter", false);   // Reset nurse letter enter bool
-        nurseLetterAnimator.SetBool("LetterExit", true);   // Set nurse letter exit bool
 
         ResetAllText();
 
@@ -252,29 +278,27 @@ public class Conversation : MonoBehaviour
     }
 
     // Admin text
-    private void AdminText()
+    private string AdminText()
     {
 	    switch (doctorScore)
 	    {
             case 4:
-	            adminText.text = adminTextFirstVerbalWarning;
+	            adminTextLine = adminTextFirstVerbalWarning;
                 break;
             case 3:
-	            adminText.text = adminTextSecondVerbalWarning;
-	            break;
+	            adminTextLine = adminTextSecondVerbalWarning;
+                break;
             case 2:
-	            adminText.text = adminTextFirstWrittenWarning;
-	            break;
+                adminTextLine = adminTextFirstWrittenWarning;
+                break;
             case 1:
-	            adminText.text = adminTextSecondWrittenWarning;
-	            break;
+                adminTextLine = adminTextSecondWrittenWarning;
+                break;
             case 0:
-	            adminText.text = adminTextDismissal;
-	            break;
-            default:
-                adminText.text = "";
+                adminTextLine = adminTextDismissal;
                 break;
         }
+        return adminTextLine;
     }
 
     // Patient text
@@ -588,6 +612,7 @@ public class Conversation : MonoBehaviour
         doctorText.text = null;
         patientText.text = null;
         nurseText.text = null;
+        adminText.text = null;
     }
 
     // Trigger results
