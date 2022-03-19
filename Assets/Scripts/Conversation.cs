@@ -164,9 +164,22 @@ public class Conversation : MonoBehaviour
             holdPatientButton.interactable = false;
             dischargePatientButton.interactable = false;
 
+            // Check if doctor is fired
+            if (doctorScore <= 0)
+            {
+                StartCoroutine(DoctorFired());
+            }
+
             // Reset results
             decisionMade = false;
         }
+    }
+
+    IEnumerator DoctorFired()
+    {
+        yield return new WaitForSeconds(1);
+
+        Debug.Log("You are fired");
     }
 
     IEnumerator TypeText(TMP_Text textMeshProText, string textToType, float typeSpeed, float startDelay)
