@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Conversation : MonoBehaviour
 {
@@ -117,10 +118,8 @@ public class Conversation : MonoBehaviour
 
     // Nurse movement animator
     [SerializeField] private Animator nurseAnimator = null;
-
     // Nurse letter movement animator
     [SerializeField] private Animator nurseLetterAnimator = null;
-
     // Admin letter movement animator
     [SerializeField] private Animator adminLetterAnimator = null;
 
@@ -142,7 +141,13 @@ public class Conversation : MonoBehaviour
     [SerializeField] private Button holdPatientButton = null;
     [SerializeField] private Button dischargePatientButton = null;
 
-    
+    // Neuroliser animation
+    [SerializeField] private Animator neuroliserAnimator = null;
+    // Flash effect
+    [SerializeField] private GameObject flashEffect = null;
+   
+
+
     // Update is called once per frame
     void Update()
     {
@@ -164,12 +169,6 @@ public class Conversation : MonoBehaviour
             holdPatientButton.interactable = false;
             dischargePatientButton.interactable = false;
 
-            // Check if doctor is fired
-            if (doctorScore <= 0)
-            {
-                StartCoroutine(DoctorFired());
-            }
-
             // Reset results
             decisionMade = false;
         }
@@ -177,9 +176,23 @@ public class Conversation : MonoBehaviour
 
     IEnumerator DoctorFired()
     {
+	    // Reset all text
+	    ResetAllText();
+
         yield return new WaitForSeconds(1);
 
         Debug.Log("You are fired");
+
+        // Trigger neuroliser animation
+        neuroliserAnimator.SetBool("raiseNeuroliser", true);
+
+        // Trigger flash effect
+        yield return new WaitForSeconds(3.0f);
+        flashEffect.SetActive(true);
+
+        // Transition to end scene
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene(2);
     }
 
     IEnumerator TypeText(TMP_Text textMeshProText, string textToType, float typeSpeed, float startDelay)
@@ -280,12 +293,21 @@ public class Conversation : MonoBehaviour
         doctorScorePreviousFrame = doctorScore;
 
         // Trigger nurse exit animation
-        nurseAnimator.SetBool("NurseEnter", false);  // Reset nurse enter bool
-        nurseAnimator.SetBool("NurseExit", true);
-        yield return new WaitForSeconds(textDelay / 2);
+        if (doctorScore > 0)
+        {
+	        nurseAnimator.SetBool("NurseEnter", false);  // Reset nurse enter bool
+	        nurseAnimator.SetBool("NurseExit", true);
+	        yield return new WaitForSeconds(textDelay / 2);
 
-        // Enable next patient button
-        SetUpNextPatientButton();
+	        // Enable next patient button
+	        SetUpNextPatientButton();
+        }
+
+        // Check if doctor is fired
+        if (doctorScore <= 0)
+        {
+	        StartCoroutine(DoctorFired());
+        }
     }
 
     // Admin text
